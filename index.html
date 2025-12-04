@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão Corporativa</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <h2>Acesso Corporativo</h2>
+            <p>Insira suas credenciais para continuar</p>
+            <input type="text" id="username" placeholder="Usuário">
+            <input type="password" id="password" placeholder="Senha">
+            <button onclick="login()">Entrar</button>
+            <p id="login-error" class="error-msg"></p>
+            <small>Admin: admin/admin | Encarregado: user/1234</small>
+        </div>
+    </div>
+
+    <div id="app-screen" class="app-container hidden">
+        
+        <nav class="sidebar">
+            <div class="logo">CorpManager</div>
+            <div class="user-info">
+                <span id="display-user">Usuário</span>
+                <small id="display-role">Função</small>
+            </div>
+            <ul>
+                <li onclick="showSection('home')" class="active"><i class="material-icons">home</i> Home</li>
+                <li onclick="showSection('os')"><i class="material-icons">assignment</i> Ordens de Serviço</li>
+                <li onclick="showSection('cronograma')"><i class="material-icons">calendar_today</i> Cronograma</li>
+                <li onclick="showSection('avisos')"><i class="material-icons">notifications</i> Avisos</li>
+                <li onclick="logout()" class="logout"><i class="material-icons">exit_to_app</i> Sair</li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            
+            <section id="sec-home">
+                <h1>Painel de Controle</h1>
+                <div class="cards-container">
+                    <div class="card">
+                        <h3>OS Pendentes</h3>
+                        <p id="count-pending">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>OS Concluídas</h3>
+                        <p id="count-done">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Avisos Ativos</h3>
+                        <p id="count-notices">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-os" class="hidden">
+                <div class="header-flex">
+                    <h1>Ordens de Serviço</h1>
+                    <button id="btn-add-os" class="btn-primary admin-only" onclick="openModal('modal-os')">+ Nova OS</button>
+                </div>
+                
+                <table class="corp-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-os-body">
+                        </tbody>
+                </table>
+            </section>
+
+            <section id="sec-cronograma" class="hidden">
+                <div class="header-flex">
+                    <h1>Cronograma Mensal</h1>
+                    <div class="admin-only upload-area">
+                        <input type="file" id="cronograma-upload" accept="application/pdf">
+                        <button class="btn-primary" onclick="uploadCronograma()">Atualizar PDF</button>
+                    </div>
+                </div>
+                <div id="cronograma-view" class="pdf-viewer">
+                    <p>Nenhum cronograma disponível no momento.</p>
+                </div>
+            </section>
+
+            <section id="sec-avisos" class="hidden">
+                <div class="header-flex">
+                    <h1>Mural de Avisos</h1>
+                    <button class="btn-primary admin-only" onclick="openModal('modal-aviso')">+ Novo Aviso</button>
+                </div>
+                <div id="avisos-list" class="avisos-grid">
+                    </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="modal-os" class="modal hidden">
+        <div class="modal-content">
+            <h3>Nova Ordem de Serviço</h3>
+            <input type="text" id="os-title" placeholder="Título da OS">
+            <textarea id="os-desc" placeholder="Descrição detalhada"></textarea>
+            <div class="modal-actions">
+                <button onclick="closeModal('modal-os')">Cancelar</button>
+                <button class="btn-primary" onclick="saveOS()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-aviso" class="modal hidden">
+        <div class="modal-content">
+            <h3>Novo Aviso</h3>
+            <input type="text" id="aviso-title" placeholder="Título do Aviso">
+            <textarea id="aviso-desc" placeholder="Mensagem"></textarea>
+            <div class="modal-actions">
+                <button onclick="closeModal('modal-aviso')">Cancelar</button>
+                <button class="btn-primary" onclick="saveAviso()">Publicar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
